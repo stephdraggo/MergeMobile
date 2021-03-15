@@ -23,7 +23,6 @@ namespace Merge.Objects
         [Header("Only fill these if this object can spawn objects.")]
         [SerializeField]
         protected int spawnCount;
-        //yeas skdfaegfa
         [SerializeField]
         protected ObjectBase[] spawnableObjects;
 
@@ -40,7 +39,14 @@ namespace Merge.Objects
         /// </summary>
         protected void Click()
         {
-
+            if (spawnsObjects)
+            {
+                if (spawnCount > 0)
+                {
+                    //spawn object here
+                }
+                spawnCount--;
+            }
         }
 
         /// <summary>
