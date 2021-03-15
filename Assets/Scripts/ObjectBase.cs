@@ -23,6 +23,7 @@ namespace Merge.Objects
         [Header("Only fill these if this object can spawn objects.")]
         [SerializeField]
         protected int spawnCount;
+        //yeas
         [SerializeField]
         protected ObjectBase[] spawnableObjects;
 
