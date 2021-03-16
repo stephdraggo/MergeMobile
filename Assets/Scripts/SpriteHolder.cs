@@ -26,11 +26,11 @@ namespace Merge
             DontDestroyOnLoad(this); //make this immortal
         }
 
-        public Sprite GetSprite(MergeColumn _column, int _level)
+        public Sprite GetSprite(MergeChain _chain, int _level)
         {
-            switch (_column)
+            switch (_chain)
             {
-                case MergeColumn.Flower:
+                case MergeChain.Flower:
                     return flowerSprites[_level];
 
                 default:
@@ -50,7 +50,7 @@ namespace Merge
         }
     }
 
-    public enum MergeColumn
+    public enum MergeChain
     {
         Flower,
     }

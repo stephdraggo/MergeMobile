@@ -12,8 +12,8 @@ namespace Merge.Objects
         public int MergeLevel { get => mergeLevel; }
 
         [SerializeField]
-        protected MergeColumn column = MergeColumn.Flower;
-        public MergeColumn Column { get => column; }
+        protected MergeChain chain = MergeChain.Flower;
+        public MergeChain Chain { get => chain; }
 
         protected Sprite sprite;
         protected SpriteRenderer render;
@@ -29,7 +29,7 @@ namespace Merge.Objects
         private void Start()
         {
             render = GetComponent<SpriteRenderer>(); //get renderer
-            sprite = SpriteHolder.instance.GetSprite(Column, MergeLevel); //get sprite
+            sprite = SpriteHolder.instance.GetSprite(Chain, MergeLevel); //get sprite
             render.sprite = sprite; //put sprite in renderer
         }
 
