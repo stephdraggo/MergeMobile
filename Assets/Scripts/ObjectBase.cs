@@ -26,11 +26,22 @@ namespace Merge.Objects
         [SerializeField]
         protected ObjectBase[] spawnableObjects;
 
+        Box currentBox;
+
+
+        private new BoxCollider2D collider;
+        public BoxCollider2D Collider => collider;
+
         private void Start()
         {
             render = GetComponent<SpriteRenderer>(); //get renderer
-            sprite = SpriteHolder.instance.GetSprite(Chain, MergeLevel); //get sprite
-            render.sprite = sprite; //put sprite in renderer
+            CheckVisual();
+
+            collider = GetComponent<BoxCollider2D>();
+            currentBox = GetComponentInParent<Box>();
+            if (currentBox) currentBox.SetObject(this);
+
+            GridManager.objectsInPlay.Add(this);
         }
 
         /// <summary>
@@ -44,37 +55,95 @@ namespace Merge.Objects
                 if (spawnCount > 0)
                 {
                     //spawn object here
+                    Box emptyBox=null;
+                    foreach (Box _box in GridManager.instance.GridBoxes)
+                    {
+                        if (_box.CurrentObject == null)
+                        {
+                            emptyBox = _box;
+                            break;
+                        }
+                    }
+                    if (emptyBox == null) return;
+
+                    ObjectBase newObject = Instantiate(spawnableObjects[0]);
+                    newObject.transform.SetParent(emptyBox.transform);
+                    newObject.transform.position = emptyBox.transform.position;
+                    spawnCount--;
                 }
-                spawnCount--;
+                
             }
         }
 
-        /// <summary>
-        /// When click/tap lasts longer than a certain interval
-        /// Attach object to finger and move
-        /// </summary>
-        protected void DragObject()
-        {
 
-        }
-
-        /// <summary>
-        /// When drag ends
-        /// Compare to target location
-        /// If same object and level is mergeable, merge
-        /// Else if object, switch places
-        /// Else place
-        /// </summary>
-        /// <param name="_target">If there is an object, this is it</param>
-        protected void DragOnto(ObjectBase _target = null)
-        {
-
-        }
 
         protected void OnMouseDrag()
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = new Vector3(mousePosition.x,mousePosition.y,-1);
+            if (mergeLevel != SpriteHolder.instance.FlowerLength - 1)
+            {
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                transform.position = new Vector3(mousePosition.x, mousePosition.y, -1);
+
+                GridManager.EnableObjectColliders(false);
+                collider.enabled = true;
+            }
+            
+        }
+
+        protected void OnMouseUpAsButton()
+        {
+
+            if(mergeLevel== SpriteHolder.instance.FlowerLength - 1)
+            {
+                Click();
+            }
+            else
+            {
+                StartCoroutine(ReleaseObject());
+            }
+        }
+
+
+        private IEnumerator ReleaseObject()
+        {
+            collider.enabled = false;
+            yield return null;
+
+            Box currentlyOver = GridManager.instance.currentlyOver;
+
+            if (currentlyOver == currentBox)
+            {
+                transform.position = currentBox.transform.position;
+            }
+            else if (currentlyOver.CurrentObject == null)
+            {
+                currentBox.RemoveObject();
+                currentlyOver.SetObject(this);
+                currentBox = currentlyOver;
+
+                transform.SetParent(currentlyOver.transform);
+                transform.position = currentlyOver.transform.position;
+            }
+            else if (currentlyOver.CurrentObject.Chain == chain && currentlyOver.CurrentObject.MergeLevel == mergeLevel)
+            {
+                currentlyOver.CurrentObject.mergeLevel++;
+                currentlyOver.CurrentObject.CheckVisual();
+
+                GridManager.objectsInPlay.Remove(this);
+                Destroy(gameObject);
+            }
+            else
+            {
+                transform.position = currentBox.transform.position;
+            }
+
+            GridManager.EnableObjectColliders(true);
+        }
+
+        public void CheckVisual()
+        {
+            sprite = SpriteHolder.instance.GetSprite(Chain, MergeLevel); //get sprite
+            render.sprite = sprite; //put sprite in renderer
         }
     }
 }

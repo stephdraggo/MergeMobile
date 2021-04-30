@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Merge.Objects;
 
 namespace Merge
 {
@@ -20,9 +21,19 @@ namespace Merge
 
         public Box currentlyOver;
 
+        public static List<ObjectBase> objectsInPlay=new List<ObjectBase>();
+
         private void Awake()
         {
             instance = this;
+        }
+
+        public static void EnableObjectColliders(bool _enable)
+        {
+            foreach (ObjectBase _object in objectsInPlay)
+            {
+                _object.Collider.enabled = _enable;
+            }
         }
 
         void Start()
@@ -42,5 +53,6 @@ namespace Merge
         {
 
         }
+
     }
 }
