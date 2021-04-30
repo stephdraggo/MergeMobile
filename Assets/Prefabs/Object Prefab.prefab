@@ -98,9 +98,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mergeLevel: 0
   chain: 0
-  spawnsObjects: 0
-  spawnCount: 0
-  spawnableObjects: []
+  spawnsObjects: 1
+  spawnCount: 4
+  spawnableObjects:
+  - {fileID: 655426081129846296}
 --- !u!61 &4358111136418799507
 BoxCollider2D:
   m_ObjectHideFlags: 0
