@@ -1,4 +1,4 @@
-using System.Collections;
+using Serializable = System.SerializableAttribute;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,9 +9,21 @@ namespace Merge
         public static SpriteHolder instance;
 
         [SerializeField]
-        private List<Sprite> flowerSprites;
+        private List<ChainSprites> chains;
 
-        public int FlowerLength => flowerSprites.Count;
+        [Serializable]
+        public struct ChainSprites
+        {
+
+            [Tooltip("Be careful not to double up on chains.")]
+            public MergeChain chainName;
+
+            public List<Sprite> sprites;
+
+            public int spritesLength => sprites.Count;
+        }
+
+        #region awake instance
         private void Awake()
         {
             if (instance == null) //if none
@@ -25,33 +37,37 @@ namespace Merge
             }
             DontDestroyOnLoad(this); //make this immortal
         }
+        #endregion
 
         public Sprite GetSprite(MergeChain _chain, int _level)
         {
             switch (_chain)
             {
-                case MergeChain.Flower:
-                    return flowerSprites[_level];
+                case MergeChain.PlaceHolder:
+                    return chains[0].sprites[_level];
 
                 default:
                     Debug.LogError("GetSprite broke, assigning default sprite.");
-                    return flowerSprites[0];
+                    return chains[0].sprites[0];
             }
         }
 
-        void Start()
+        public int GetChainLength(MergeChain _chain)
         {
+            switch (_chain)
+            {
+                case MergeChain.PlaceHolder:
+                    return chains[0].spritesLength;
 
-        }
 
-        void Update()
-        {
-
+                default:
+                    return 0;
+            }
         }
     }
 
     public enum MergeChain
     {
-        Flower,
+        PlaceHolder,
     }
 }
