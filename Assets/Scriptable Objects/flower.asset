@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: flower
+  m_EditorClassIdentifier: 
+  chainBase: {fileID: 0}
+  spawningLevel: 0
+  sprites:
+  - {fileID: -4072407800104917566, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  - {fileID: -3052788059951374536, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  - {fileID: -4152747134907307186, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  - {fileID: -8931058242795695031, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  - {fileID: 4414196182573725986, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  - {fileID: -4410104916055541068, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
+  spawnables:
+  - {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: Sprout
+  m_EditorClassIdentifier: 
+  chainBase: {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
+  spawningLevel: 3
+  sprites:
+  - {fileID: 8426299393505697603, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: -1675454312927089570, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 4997882962729895955, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 861392153350011050, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 4443184427576929467, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: -3734564000758815443, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 1805632823588770020, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 1608508683092237890, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: 222506917046333568, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  - {fileID: -7717749869419911642, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
+  spawnables:
+  - {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
