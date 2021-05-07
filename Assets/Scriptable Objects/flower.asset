@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
   m_Name: flower
   m_EditorClassIdentifier: 
-  chainBase: {fileID: 0}
+  chainBase: {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
   spawningLevel: 0
   sprites:
   - {fileID: -4072407800104917566, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
