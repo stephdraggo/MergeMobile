@@ -9,6 +9,7 @@ namespace Merge
     {
         [SerializeField, Tooltip("BasObject Prefab")]
         protected ObjectBase chainBase;
+        public ObjectBase ChainBaseObject => chainBase;
 
         [SerializeField, Tooltip("At what level this chain should start spawning items.")]
         protected int spawningLevel;
@@ -43,9 +44,9 @@ namespace Merge
 
         public ObjectBase NewObject(Box _location, ObjectBase _prefab = null, int _level = 0)
         {
-            if (_prefab == null) _prefab = chainBase;
+            if (_prefab == null) _prefab = chainBase; //default prefab if none passed
 
-            if (_location == null) return null;
+            if (_location == null) return null; //do not continue if no valid location passed
 
             ObjectBase newObject = Instantiate(_prefab, _location.transform.position + new Vector3(0, 0, -1), Quaternion.identity, _location.transform);
 
@@ -53,9 +54,11 @@ namespace Merge
             int amount = (_level - spawningLevel + 1) * 4;
             newObject.Setup(this, _level, spawns, spawnables, amount);
 
-            GridManager.objectsInPlay.Add(newObject); //let the gridmanager know we succeeded
+            //GridManager.objectsInPlay.Add(newObject); //let the gridmanager know we succeeded
 
+            _location.SetObject(newObject);
 
+            GridManager.EnableObjectColliders(true);
 
             return newObject;
         }

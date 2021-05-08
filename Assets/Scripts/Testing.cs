@@ -9,7 +9,7 @@ namespace Merge
 
         public void SpawnObject()
         {
-            chain.NewObject(GridManager.FreeBox());
+            chain.NewObject(GridManager.FreeBox(),chain.ChainBaseObject, 3);
         }
 
     }

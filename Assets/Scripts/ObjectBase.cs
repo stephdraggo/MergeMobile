@@ -37,7 +37,10 @@ namespace Merge
 
         public BoxCollider2D Collider { get; private set; }
 
-
+        protected void Awake()
+        {
+            enabled = true;
+        }
 
         protected void Start()
         {
@@ -45,6 +48,8 @@ namespace Merge
             CheckVisual(); //attach and display correct sprite
 
             Collider = GetComponent<BoxCollider2D>(); //get own collider
+            if (!Collider.enabled) Collider.enabled = true;
+
             currentBox = GetComponentInParent<Box>(); //get box parent
             if (currentBox) currentBox.SetObject(this); //tell box parent about this child
             else Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.", gameObject);
@@ -114,12 +119,18 @@ namespace Merge
 
             if (location != null) //if we have a valid location to spawn to
             {
-                return Chain.NewObject(location, _prefab);
+                return Chain.NewObject(location, _prefab, mergeLevel+1);
             }
             else //if we failed to find a valid location, do not spawn anything
             {
                 return null;
             }
+        }
+
+        protected void OnMouseDown()
+        {
+            GridManager.EnableObjectColliders(false); //disable other object colliders so only the colliders for the boxes are accessible
+            Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
         }
 
         /// <summary>
@@ -132,9 +143,6 @@ namespace Merge
             {
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 transform.position = new Vector3(mousePosition.x, mousePosition.y, -1);
-
-                GridManager.EnableObjectColliders(false); //disable other object colliders so only the colliders for the boxes are accessible
-                Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
             }
         }
 
@@ -170,13 +178,10 @@ namespace Merge
             }
             else if (currentlyOver.CurrentObject.Chain == chain && currentlyOver.CurrentObject.MergeLevel == mergeLevel && mergeable) //if over a box containing an identical object and mergeable
             {
-                currentlyOver.CurrentObject.mergeLevel++;
-                currentlyOver.CurrentObject.CheckVisual();
+                SpawnObject(this, true);
 
-                GridManager.objectsInPlay.Remove(this);
-                Destroy(gameObject);
-
-                //SpawnObject(this, true);
+                currentlyOver.CurrentObject.KillObject();
+                KillObject();
             }
             else //catch
             {

@@ -60,6 +60,7 @@ namespace Merge
         /// <param name="_enable">Enable colliders?</param>
         public static void EnableObjectColliders(bool _enable)
         {
+            //this should clear any null objects
             for (int i = 0; i < objectsInPlay.Count; i++)
             {
                 if (objectsInPlay[i] == null)
