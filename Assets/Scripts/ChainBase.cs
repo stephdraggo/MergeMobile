@@ -45,6 +45,8 @@ namespace Merge
         {
             if (_prefab == null) _prefab = chainBase;
 
+            if (_location == null) return null;
+
             ObjectBase newObject = Instantiate(_prefab, _location.transform.position + new Vector3(0, 0, -1), Quaternion.identity, _location.transform);
 
             bool spawns = _level >= spawningLevel;

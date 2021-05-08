@@ -41,7 +41,7 @@ namespace Merge
 
         protected void Start()
         {
-            render = GetComponent<SpriteRenderer>(); //get renderer
+            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
             CheckVisual(); //attach and display correct sprite
 
             Collider = GetComponent<BoxCollider2D>(); //get own collider
@@ -193,6 +193,7 @@ namespace Merge
         /// </summary>
         public void CheckVisual()
         {
+            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
             sprite = Chain.GetSprite(MergeLevel); //get sprite
             render.sprite = sprite; //put sprite in renderer
         }

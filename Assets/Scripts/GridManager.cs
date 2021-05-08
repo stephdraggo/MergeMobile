@@ -60,10 +60,24 @@ namespace Merge
         /// <param name="_enable">Enable colliders?</param>
         public static void EnableObjectColliders(bool _enable)
         {
+            for (int i = 0; i < objectsInPlay.Count; i++)
+            {
+                if (objectsInPlay[i] == null)
+                    objectsInPlay.RemoveAt(i);
+            }
+
             foreach (ObjectBase _object in objectsInPlay)
             {
-                _object.Collider.enabled = _enable;
-                //get a weird null reference here, doesn't seem to break anything tho
+                if (_object != null)
+                {
+                    _object.Collider.enabled = _enable;
+
+                    if (_object.Collider == null) Debug.Log($"{_object.name} is currently missing a collider or just not refering to it", _object);
+                }
+                else
+                {
+                    Debug.Log("object null");
+                }
             }
         }
 
@@ -83,6 +97,7 @@ namespace Merge
             }
             return emptyBox;
         }
+
 
     }
 }
