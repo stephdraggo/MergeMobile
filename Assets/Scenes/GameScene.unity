@@ -711,6 +711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 421815881}
   - component: {fileID: 421815882}
+  - component: {fileID: 421815883}
   - component: {fileID: 421815880}
   m_Layer: 0
   m_Name: Static Scripts
@@ -731,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42b2f0b45f5ba14ead411a7ca16f544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chain: {fileID: 0}
+  chain: {fileID: 11400000, guid: 6f7f9275a5869da478747b182811f851, type: 2}
 --- !u!4 &421815881
 Transform:
   m_ObjectHideFlags: 0
@@ -768,6 +769,23 @@ MonoBehaviour:
   - {fileID: 792039884}
   - {fileID: 232383869}
   columnCount: 5
+--- !u!114 &421815883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421815879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 657bf739b79f3344c950ea5c6725f69e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countForEach: 10
+  timer: 5
+  chains:
+  - {fileID: 11400000, guid: 6f7f9275a5869da478747b182811f851, type: 2}
+  - {fileID: 11400000, guid: 624b0566757fe04498be321ef43ec260, type: 2}
 --- !u!1 &501591124
 GameObject:
   m_ObjectHideFlags: 0

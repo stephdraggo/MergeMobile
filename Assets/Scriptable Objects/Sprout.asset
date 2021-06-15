@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
   m_Name: Sprout
   m_EditorClassIdentifier: 
-  chainBase: {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
+  chainBase: {fileID: 655426081129846296, guid: 62da55618cc1dd046a3ba7661b8d7819, type: 3}
   spawningLevel: 3
   sprites:
   - {fileID: 8426299393505697603, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
@@ -26,4 +26,4 @@ MonoBehaviour:
   - {fileID: 222506917046333568, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
   - {fileID: -7717749869419911642, guid: 26c2f5eee981587409778a0c8528b430, type: 3}
   spawnables:
-  - {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
+  - {fileID: 11400000, guid: 6f7f9275a5869da478747b182811f851, type: 2}

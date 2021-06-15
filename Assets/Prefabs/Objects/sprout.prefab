@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 655426081129846296}
   - component: {fileID: 4358111136418799507}
   m_Layer: 0
-  m_Name: Object Prefab
+  m_Name: Object Prefab 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,11 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mergeLevel: 0
-  chain: {fileID: 11400000, guid: 6f7f9275a5869da478747b182811f851, type: 2}
+  chain: {fileID: 11400000, guid: 624b0566757fe04498be321ef43ec260, type: 2}
   spawnsObjects: 1
   spawnCount: 4
   spawnableObjects:
-  - {fileID: 655426081129846296}
+  - {fileID: 11400000, guid: 6f7f9275a5869da478747b182811f851, type: 2}
 --- !u!61 &4358111136418799507
 BoxCollider2D:
   m_ObjectHideFlags: 0

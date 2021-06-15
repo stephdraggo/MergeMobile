@@ -6,9 +6,15 @@ namespace Merge
 {
     public class ObjectBase : MonoBehaviour
     {
-        [SerializeField, Range(0, 20), Tooltip("Theoretical max is 20, but actual max varies according to number of levels in this object's merge column type. Values higher than allowed will result in default sprite being applied.")]
+        [SerializeField, Range(0, 20),
+         Tooltip(
+             "Theoretical max is 20, but actual max varies according to number of levels in this object's merge column type. Values higher than allowed will result in default sprite being applied.")]
         protected int mergeLevel = 0;
-        public int MergeLevel { get => mergeLevel; }
+        public int MergeLevel
+        {
+            get => mergeLevel;
+        }
+
         protected bool mergeable
         {
             get
@@ -20,18 +26,20 @@ namespace Merge
 
         [SerializeField, Tooltip("Merge chain this object belongs to.")]
         protected ChainBase chain;
-        public ChainBase Chain { get => chain; }
+        public ChainBase Chain
+        {
+            get => chain;
+        }
 
         protected Sprite sprite;
         protected SpriteRenderer render;
 
-        [SerializeField]
-        protected bool spawnsObjects = false;
-        [Header("Only fill these if this object can spawn objects.")]
-        [SerializeField]
+        [SerializeField] protected bool spawnsObjects = false;
+
+        [Header("Only fill these if this object can spawn objects.")] [SerializeField]
         protected int spawnCount;
-        [SerializeField]
-        protected ObjectBase[] spawnableObjects;
+
+        protected ChainBase[] spawnableObjects;
 
         Box currentBox;
 
@@ -52,7 +60,9 @@ namespace Merge
 
             currentBox = GetComponentInParent<Box>(); //get box parent
             if (currentBox) currentBox.SetObject(this); //tell box parent about this child
-            else Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.", gameObject);
+            else
+                Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.",
+                    gameObject);
 
             GridManager.objectsInPlay.Add(this); //tell gridmanager about this object
         }
@@ -60,7 +70,8 @@ namespace Merge
         /// <summary>
         /// Manually setup specifics when instatiating a new object
         /// </summary>
-        public void Setup(ChainBase _chain, int _level = 0, bool _spawnsObjects = false, ObjectBase[] _spawnable = null, int _spawnCount = 0)
+        public void Setup(ChainBase _chain, int _level = 0, bool _spawnsObjects = false, ChainBase[] _spawnable = null,
+            int _spawnCount = 0)
         {
             chain = _chain;
             mergeLevel = _level;
@@ -74,8 +85,6 @@ namespace Merge
             CheckVisual();
         }
 
-
-
         /// <summary>
         /// If this object spawns anything on click/tap
         /// This function will spawn it
@@ -86,7 +95,11 @@ namespace Merge
             {
                 if (spawnCount > 0) //and if there are still objects for it to spawn
                 {
-                    ObjectBase newObject = SpawnObject(spawnableObjects[Random.Range(0, spawnableObjects.Length - 1)]); //spawn random spawnable prefab
+                    ObjectBase newObject =
+                        SpawnObject(
+                            spawnableObjects[
+                                    Random.Range(0, spawnableObjects.Length - 1)]
+                                .ChainBaseObject); //spawn random spawnable prefab
 
                     if (newObject != null) //if spawn object succeeded
                     {
@@ -96,6 +109,7 @@ namespace Merge
                     if (spawnCount <= 0) KillObject(); //kill object if empty
                 }
             }
+
             GridManager.EnableObjectColliders(true); //enable object colliders again in case they got disabled
         }
 
@@ -107,29 +121,36 @@ namespace Merge
         protected ObjectBase SpawnObject(ObjectBase _prefab, bool _replacement = false)
         {
             Box location;
+            int level = 0;
             if (_replacement)
             {
                 location = currentBox;
                 KillObject();
+                level = mergeLevel + 1;
+                if (location != null) //if we have a valid location to spawn to
+                {
+                    return Chain.NewObject(location, _prefab, level);
+                }
+
+                return null;
             }
-            else
-            {
-                location = GridManager.FreeBox();
-            }
+
+            location = GridManager.FreeBox();
+            level = Mathf.Max(0, mergeLevel - 3);
+
 
             if (location != null) //if we have a valid location to spawn to
             {
-                return Chain.NewObject(location, _prefab, mergeLevel+1);
+                return Chain.NewObject(location, _prefab, Random.Range(0, level));
             }
-            else //if we failed to find a valid location, do not spawn anything
-            {
-                return null;
-            }
+
+            return null;
         }
 
         protected void OnMouseDown()
         {
-            GridManager.EnableObjectColliders(false); //disable other object colliders so only the colliders for the boxes are accessible
+            GridManager.EnableObjectColliders(
+                false); //disable other object colliders so only the colliders for the boxes are accessible
             Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
         }
 
@@ -176,7 +197,9 @@ namespace Merge
                 transform.SetParent(currentlyOver.transform); //hierarchy
                 transform.position = currentlyOver.transform.position; //scene position
             }
-            else if (currentlyOver.CurrentObject.Chain == chain && currentlyOver.CurrentObject.MergeLevel == mergeLevel && mergeable) //if over a box containing an identical object and mergeable
+            else if (currentlyOver.CurrentObject.Chain == chain &&
+                     currentlyOver.CurrentObject.MergeLevel == mergeLevel &&
+                     mergeable) //if over a box containing an identical object and mergeable
             {
                 SpawnObject(this, true);
 
