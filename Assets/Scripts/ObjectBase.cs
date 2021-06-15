@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Sprites;
 
-namespace Merge.Objects
+namespace Merge
 {
     public class ObjectBase : MonoBehaviour
     {
         [SerializeField, Range(0, 20), Tooltip("Theoretical max is 20, but actual max varies according to number of levels in this object's merge column type. Values higher than allowed will result in default sprite being applied.")]
         protected int mergeLevel = 0;
         public int MergeLevel { get => mergeLevel; }
-        private int maxLevel;
+        protected bool mergeable
+        {
+            get
+            {
+                if (mergeLevel >= chain.ChainLength) return false;
+                return true;
+            }
+        }
 
         [SerializeField, Tooltip("Merge chain this object belongs to.")]
-        protected MergeChain chain;
-        public MergeChain Chain { get => chain; }
+        protected ChainBase chain;
+        public ChainBase Chain { get => chain; }
 
         protected Sprite sprite;
         protected SpriteRenderer render;
@@ -29,24 +35,46 @@ namespace Merge.Objects
 
         Box currentBox;
 
+        public BoxCollider2D Collider { get; private set; }
 
-        private new BoxCollider2D collider;
-        public BoxCollider2D Collider => collider;
-
-        private void Start()
+        protected void Awake()
         {
-            render = GetComponent<SpriteRenderer>(); //get renderer
+            enabled = true;
+        }
+
+        protected void Start()
+        {
+            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
             CheckVisual(); //attach and display correct sprite
 
-            collider = GetComponent<BoxCollider2D>(); //get own collider
+            Collider = GetComponent<BoxCollider2D>(); //get own collider
+            if (!Collider.enabled) Collider.enabled = true;
+
             currentBox = GetComponentInParent<Box>(); //get box parent
             if (currentBox) currentBox.SetObject(this); //tell box parent about this child
             else Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.", gameObject);
 
             GridManager.objectsInPlay.Add(this); //tell gridmanager about this object
-
-            maxLevel = SpriteHolder.instance.GetChainLength(chain);
         }
+
+        /// <summary>
+        /// Manually setup specifics when instatiating a new object
+        /// </summary>
+        public void Setup(ChainBase _chain, int _level = 0, bool _spawnsObjects = false, ObjectBase[] _spawnable = null, int _spawnCount = 0)
+        {
+            chain = _chain;
+            mergeLevel = _level;
+            spawnsObjects = _spawnsObjects;
+            if (_spawnsObjects)
+            {
+                spawnableObjects = _spawnable;
+                spawnCount = _spawnCount;
+            }
+
+            CheckVisual();
+        }
+
+
 
         /// <summary>
         /// If this object spawns anything on click/tap
@@ -58,23 +86,12 @@ namespace Merge.Objects
             {
                 if (spawnCount > 0) //and if there are still objects for it to spawn
                 {
-                    //find free box
-                    Box emptyBox = null;
-                    foreach (Box _box in GridManager.instance.GridBoxes)
+                    ObjectBase newObject = SpawnObject(spawnableObjects[Random.Range(0, spawnableObjects.Length - 1)]); //spawn random spawnable prefab
+
+                    if (newObject != null) //if spawn object succeeded
                     {
-                        if (_box.CurrentObject == null)
-                        {
-                            emptyBox = _box;
-                            break;
-                        }
+                        spawnCount--; //decrease spawnable objects
                     }
-                    if (emptyBox == null) return; //if no free box was found, click does nothing
-
-                    ObjectBase newObject = Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Length - 1)]); //get random spawnable prefab
-                    newObject.transform.SetParent(emptyBox.transform); //set position in hierarchy
-                    newObject.transform.position = emptyBox.transform.position + new Vector3(0, 0, -1); //set position in scene
-
-                    spawnCount--; //decrease spawnable objects
 
                     if (spawnCount <= 0) KillObject(); //kill object if empty
                 }
@@ -82,6 +99,39 @@ namespace Merge.Objects
             GridManager.EnableObjectColliders(true); //enable object colliders again in case they got disabled
         }
 
+        /// <summary>
+        /// Tries to spawn a given object prefab.
+        /// </summary>
+        /// <param name="_prefab">Object prefab to spawn</param>
+        /// <param name="_replacement">Is this new object to</param>
+        protected ObjectBase SpawnObject(ObjectBase _prefab, bool _replacement = false)
+        {
+            Box location;
+            if (_replacement)
+            {
+                location = currentBox;
+                KillObject();
+            }
+            else
+            {
+                location = GridManager.FreeBox();
+            }
+
+            if (location != null) //if we have a valid location to spawn to
+            {
+                return Chain.NewObject(location, _prefab, mergeLevel+1);
+            }
+            else //if we failed to find a valid location, do not spawn anything
+            {
+                return null;
+            }
+        }
+
+        protected void OnMouseDown()
+        {
+            GridManager.EnableObjectColliders(false); //disable other object colliders so only the colliders for the boxes are accessible
+            Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
+        }
 
         /// <summary>
         /// Make selected object follow mouse.
@@ -89,13 +139,10 @@ namespace Merge.Objects
         /// </summary>
         protected void OnMouseDrag()
         {
-            if (mergeLevel != maxLevel - 1)
+            if (mergeable)
             {
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 transform.position = new Vector3(mousePosition.x, mousePosition.y, -1);
-
-                GridManager.EnableObjectColliders(false); //disable other object colliders so only the colliders for the boxes are accessible
-                collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
             }
         }
 
@@ -104,48 +151,41 @@ namespace Merge.Objects
         /// </summary>
         protected void OnMouseUpAsButton()
         {
-            if (mergeLevel == maxLevel - 1)
-            {
-                Click();
-            }
-            else
-            {
-                StartCoroutine(ReleaseObject());
-            }
+            StartCoroutine(ReleaseObject());
         }
 
 
-        private IEnumerator ReleaseObject()
+        protected IEnumerator ReleaseObject()
         {
-            collider.enabled = false;
+            Collider.enabled = false;
             yield return null;
 
-            Box currentlyOver = GridManager.instance.currentlyOver;
+            Box currentlyOver = GridManager.currentlyOver;
 
-            if (currentlyOver == currentBox)
+            if (currentlyOver == currentBox) //if have not changed box
             {
-                transform.position = currentBox.transform.position;
+                transform.position = currentBox.transform.position; //reset position
+                Click(); //check for click spawning
             }
-            else if (currentlyOver.CurrentObject == null)
+            else if (currentlyOver.CurrentObject == null) //if over an empty box
             {
-                currentBox.RemoveObject();
-                currentlyOver.SetObject(this);
-                currentBox = currentlyOver;
+                currentBox.RemoveObject(); //remove from old box
+                currentlyOver.SetObject(this); //inform new box that it's moving in
+                currentBox = currentlyOver; //get new box data
 
-                transform.SetParent(currentlyOver.transform);
-                transform.position = currentlyOver.transform.position;
+                transform.SetParent(currentlyOver.transform); //hierarchy
+                transform.position = currentlyOver.transform.position; //scene position
             }
-            else if (currentlyOver.CurrentObject.Chain == chain && currentlyOver.CurrentObject.MergeLevel == mergeLevel)
+            else if (currentlyOver.CurrentObject.Chain == chain && currentlyOver.CurrentObject.MergeLevel == mergeLevel && mergeable) //if over a box containing an identical object and mergeable
             {
-                currentlyOver.CurrentObject.mergeLevel++;
-                currentlyOver.CurrentObject.CheckVisual();
+                SpawnObject(this, true);
 
-                GridManager.objectsInPlay.Remove(this);
-                Destroy(gameObject);
+                currentlyOver.CurrentObject.KillObject();
+                KillObject();
             }
-            else
+            else //catch
             {
-                transform.position = currentBox.transform.position;
+                transform.position = currentBox.transform.position; //reset position
             }
 
             transform.position += new Vector3(0, 0, -1);
@@ -158,7 +198,8 @@ namespace Merge.Objects
         /// </summary>
         public void CheckVisual()
         {
-            sprite = SpriteHolder.instance.GetSprite(Chain, MergeLevel); //get sprite
+            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
+            sprite = Chain.GetSprite(MergeLevel); //get sprite
             render.sprite = sprite; //put sprite in renderer
         }
 
