@@ -1,13 +1,27 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Merge
 {
+    /// <summary>
+    /// Holds information about the grid and its contents
+    /// </summary>
     public class GridManager : MonoBehaviour
     {
-        public static GridManager instance;
+        #region Variables
 
+        //------------Static------------
+        public static GridManager Instance;
+        public static Box[,] GridBoxes => gridBoxes;
+
+        public static Box currentlyOver;
+
+        [Tooltip("List of objects currently in the level.")]
+        public static List<ObjectBase> ObjectsInPlay = new List<ObjectBase>();
+
+        //----------Properties----------
+        //------------Public------------
+        //----------Serialised----------
         [SerializeField, Tooltip("Rows in grid.")]
         private GameObject[] rows;
 
@@ -16,42 +30,32 @@ namespace Merge
 
         [Tooltip("Transforms that can hold items.")]
         private static Box[,] gridBoxes;
-        public static Box[,] GridBoxes => gridBoxes;
 
-        public static Box currentlyOver;
+        //-----------Private------------
+        //------------Const-------------
 
-        [Tooltip("List of objects currently in the level.")]
-        public static List<ObjectBase> objectsInPlay = new List<ObjectBase>();
+        #endregion
 
-        #region awake instance
+        //Awake, Start
+
+        #region Default Methods
+
         private void Awake()
         {
-            if (instance == null) //if none
-            {
-                instance = this; //it this
-            }
-            else if (instance != this) //if one, but not this
-            {
-                Destroy(this); //get rid of this
-                return;
-            }
+            CheckInstanceAwake();
         }
-        #endregion
 
-        #region start grid data
         private void Start()
         {
-            gridBoxes = new Box[rows.Length, columnCount]; //gridboxes has correct size
-            for (int i = 0; i < rows.Length; i++) //go through each row
-            {
-                Box[] boxes = rows[i].GetComponentsInChildren<Box>(); //each row has an array of boxes in it
-                for (int j = 0; j < columnCount; j++) //for every column
-                {
-                    gridBoxes[i, j] = boxes[j]; //assign to 2d array
-                }
-            }
+            SetupGridReferences();
         }
+
         #endregion
+
+        //EnableObjectColliders, FreeBox
+        //CheckInstanceAwake, SetupGridReferences
+
+        #region Other Methods
 
         /// <summary>
         /// Enable or disable all colliders on objects.
@@ -61,19 +65,21 @@ namespace Merge
         public static void EnableObjectColliders(bool _enable)
         {
             //this should clear any null objects
-            for (int i = 0; i < objectsInPlay.Count; i++)
+            for (int i = 0; i < ObjectsInPlay.Count; i++)
             {
-                if (objectsInPlay[i] == null)
-                    objectsInPlay.RemoveAt(i);
+                if (ObjectsInPlay[i] == null)
+                    ObjectsInPlay.RemoveAt(i);
             }
 
-            foreach (ObjectBase _object in objectsInPlay)
+            foreach (ObjectBase _object in ObjectsInPlay)
             {
                 if (_object != null)
                 {
                     _object.Collider.enabled = _enable;
 
-                    if (_object.Collider == null) Debug.Log($"{_object.name} is currently missing a collider or just not refering to it", _object);
+                    if (_object.Collider == null)
+                        Debug.Log($"{_object.name} is currently missing a collider or just not refering to it",
+                            _object);
                 }
                 else
                 {
@@ -96,9 +102,39 @@ namespace Merge
                     break;
                 }
             }
+
             return emptyBox;
         }
 
+        private void CheckInstanceAwake()
+        {
+            if (Instance == null) //if none
+            {
+                Instance = this; //it this
+            }
+            else if (Instance != this) //if one, but not this
+            {
+                Destroy(this); //get rid of this
+                return;
+            }
+        }
 
+        /// <summary>
+        /// Uses information provided to set up 2d array reference to grid
+        /// </summary>
+        private void SetupGridReferences()
+        {
+            gridBoxes = new Box[rows.Length, columnCount]; //gridboxes get correct size
+            for (int i = 0; i < rows.Length; i++) //go through each row
+            {
+                Box[] boxes = rows[i].GetComponentsInChildren<Box>(); //each row has an array of boxes in it
+                for (int j = 0; j < columnCount; j++) //for every column
+                {
+                    gridBoxes[i, j] = boxes[j]; //assign to 2d array
+                }
+            }
+        }
+
+        #endregion
     }
 }

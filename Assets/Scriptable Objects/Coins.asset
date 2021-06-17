@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: Coins
+  m_EditorClassIdentifier: 
+  objectName: Coins
+  chainBase: {fileID: -6688946256251964233, guid: 7041572da83a2e1449de76fde3559fd8, type: 3}
+  spawningLevel: 0
+  sprites:
+  - {fileID: -1708447161738566870, guid: 51623fc432003f54eab49ecd855a74a7, type: 3}
+  - {fileID: 8979242394014926483, guid: b339ca6cfb3163a41ac4d56228972eaf, type: 3}
+  - {fileID: 1281527856290464004, guid: 547b225c57acb6d459b9da444c00f972, type: 3}
+  - {fileID: 246877782959279574, guid: 3e4ce5c9a9a2cc34d8a2e72273d54f8b, type: 3}
+  - {fileID: 7499868739140594773, guid: 4c64603d22031a046a533dfb3725d800, type: 3}
+  - {fileID: -3722542787549261513, guid: ef0f7b623bdd8d94d94a57dbf97fbe29, type: 3}
+  spawnables: []
+  countOnStart: 0
+  spawnTimer: 100

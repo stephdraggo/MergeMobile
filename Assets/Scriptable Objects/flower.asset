@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
   m_Name: flower
   m_EditorClassIdentifier: 
+  objectName: Flower
   chainBase: {fileID: 655426081129846296, guid: 80b5d3f32acdc9c429330b6beee95f2a, type: 3}
   spawningLevel: 4
   sprites:
@@ -22,4 +23,7 @@ MonoBehaviour:
   - {fileID: 4414196182573725986, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
   - {fileID: -4410104916055541068, guid: 53bcd0a036c0f96419cfd1a4d5b6e676, type: 3}
   spawnables:
-  - {fileID: 11400000, guid: 624b0566757fe04498be321ef43ec260, type: 2}
+  - {fileID: 11400000, guid: 5a30fbe7420137145b04e4d0d31c65d5, type: 2}
+  - {fileID: 11400000, guid: 8348ee4fe111b834ebe13f491bd4ed51, type: 2}
+  countOnStart: 8
+  spawnTimer: 10

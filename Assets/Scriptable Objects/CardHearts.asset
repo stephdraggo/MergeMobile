@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: CardHearts
+  m_EditorClassIdentifier: 
+  objectName: HeartSuit
+  chainBase: {fileID: 655426081129846296, guid: fdb7a5cc3edf98f4188fc8e0365ea41a, type: 3}
+  spawningLevel: 6
+  sprites:
+  - {fileID: -537386747245667997, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 2618629670450623343, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: -1640736010421711782, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 8068175652587602051, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: -6319595244360775798, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 6819242989020465979, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: -4839373003924371747, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: -8023219845442180536, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: -1125826070276100199, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 6013987301836276786, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 6761215905122860116, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 6254618936910308511, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  - {fileID: 1137167758113052772, guid: 4e442b04e76751f49b5a7fda9bf790be, type: 3}
+  spawnables:
+  - {fileID: 11400000, guid: 36878ad11f0b53f4fa897c7a26dbce49, type: 2}
+  countOnStart: 2
+  spawnTimer: 42

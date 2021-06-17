@@ -5,12 +5,32 @@ using UnityEngine;
 
 namespace Merge
 {
+    /// <summary>
+    /// Functionality for grid pieces
+    /// </summary>
     [RequireComponent(typeof(BoxCollider2D))]
     public class Box : MonoBehaviour
     {
+        #region Variables
+
+        //------------Static------------
+        //----------Properties----------
+        public ObjectBase CurrentObject => currentObject;
+
+        //------------Public------------
+        //----------Serialised----------
         [Tooltip("The current contents of this box.")]
         private ObjectBase currentObject;
-        public ObjectBase CurrentObject => currentObject;
+
+        //-----------Private------------
+        //------------Const-------------
+
+        #endregion
+
+        //Awake
+        //OnMouseEnter, OnMouseOver
+
+        #region Default Methods
 
         private void Awake()
         {
@@ -38,6 +58,12 @@ namespace Merge
             GridManager.currentlyOver = this;
         }
 
+        #endregion
+
+        //SetObject, RemoveObject
+
+        #region Other Methods
+
         /// <summary>
         /// Tell this box it has a new object to hold
         /// </summary>
@@ -45,7 +71,10 @@ namespace Merge
         public void SetObject(ObjectBase _object)
         {
             if (currentObject != null)
-                Debug.LogWarning($"Overwriting the previous {currentObject} with {_object}", gameObject);
+            {
+                //Debug.LogWarning($"Overwriting the previous {currentObject} with {_object}", gameObject);
+            }
+
             currentObject = _object;
         }
 
@@ -54,7 +83,6 @@ namespace Merge
         /// </summary>
         public void RemoveObject() => currentObject = null;
 
-
-
+        #endregion
     }
 }

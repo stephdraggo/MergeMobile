@@ -4,18 +4,29 @@ using UnityEngine;
 
 namespace Merge
 {
+    /// <summary>
+    /// Functionality, behaviour, and information for individual objects on the grid
+    /// </summary>
     public class ObjectBase : MonoBehaviour
     {
-        [SerializeField, Range(0, 20),
-         Tooltip(
-             "Theoretical max is 20, but actual max varies according to number of levels in this object's merge column type. Values higher than allowed will result in default sprite being applied.")]
-        protected int mergeLevel = 0;
+        #region Variables
+
+        //------------Static------------
+
+        //----------Properties----------
         public int MergeLevel
         {
             get => mergeLevel;
         }
 
-        protected bool mergeable
+        public ChainBase Chain
+        {
+            get => chain;
+        }
+
+        public BoxCollider2D Collider { get; private set; }
+
+        public bool Mergeable
         {
             get
             {
@@ -23,49 +34,93 @@ namespace Merge
                 return true;
             }
         }
+        //------------Public------------
+
+        //----------Serialised----------
+        [SerializeField, Range(0, 20),
+         Tooltip("Theoretical max is 20, but actual max varies according to number " +
+                 "of levels in this object's merge column type. Values higher than " +
+                 "allowed will result in default sprite being applied.")]
+        protected int mergeLevel = 0;
 
         [SerializeField, Tooltip("Merge chain this object belongs to.")]
         protected ChainBase chain;
-        public ChainBase Chain
-        {
-            get => chain;
-        }
-
-        protected Sprite sprite;
-        protected SpriteRenderer render;
 
         [SerializeField] protected bool spawnsObjects = false;
 
         [Header("Only fill these if this object can spawn objects.")] [SerializeField]
         protected int spawnCount;
 
+        //-----------Private------------
+        protected Sprite sprite;
+        protected SpriteRenderer render;
         protected ChainBase[] spawnableObjects;
 
-        Box currentBox;
+        protected Box currentBox;
+        //------------Const-------------
 
-        public BoxCollider2D Collider { get; private set; }
+        #endregion
+
+        //Awake, Start
+        //OnMouseDown, OnMouseDrag, OnMouseUpAsButton
+
+        #region Default Methods
 
         protected void Awake()
         {
             enabled = true;
         }
 
-        protected void Start()
+        protected virtual void Start()
         {
-            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
+            //display
+            render ??= GetComponent<SpriteRenderer>(); //get renderer
             CheckVisual(); //attach and display correct sprite
 
+            //collider
             Collider = GetComponent<BoxCollider2D>(); //get own collider
             if (!Collider.enabled) Collider.enabled = true;
 
-            currentBox = GetComponentInParent<Box>(); //get box parent
-            if (currentBox) currentBox.SetObject(this); //tell box parent about this child
-            else
-                Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.",
-                    gameObject);
-
-            GridManager.objectsInPlay.Add(this); //tell gridmanager about this object
+            //manager references
+            SetBox();
+            GridManager.ObjectsInPlay.Add(this); //tell gridmanager about this object
         }
+
+        protected void OnMouseDown()
+        {
+            GridManager.EnableObjectColliders(
+                false); //disable other object colliders so only the colliders for the boxes are accessible
+            Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
+        }
+
+        /// <summary>
+        /// Make selected object follow mouse.
+        /// Objects that have reached the highest merge level cannot currently be moved.
+        /// </summary>
+        protected void OnMouseDrag()
+        {
+            if (Mergeable)
+            {
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                transform.position = new Vector3(mousePosition.x, mousePosition.y, -1);
+            }
+        }
+
+        /// <summary>
+        /// Start object release coroutine
+        /// </summary>
+        protected void OnMouseUpAsButton()
+        {
+            StartCoroutine(ReleaseObject());
+        }
+
+        #endregion
+
+        //Setup, CheckVisual, KillObject
+        //Click, SpawnObjects, ReleaseObject
+        //SetBox
+
+        #region Other Methods
 
         /// <summary>
         /// Manually setup specifics when instatiating a new object
@@ -86,10 +141,29 @@ namespace Merge
         }
 
         /// <summary>
+        /// Get the appropriate sprite and display it.
+        /// </summary>
+        public void CheckVisual()
+        {
+            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
+            sprite = Chain.GetSprite(MergeLevel); //get sprite
+            render.sprite = sprite; //put sprite in renderer
+        }
+
+        /// <summary>
+        /// Remove this object from list of active objects and destroy the gameobject.
+        /// </summary>
+        public void KillObject()
+        {
+            GridManager.ObjectsInPlay.Remove(this);
+            Destroy(gameObject);
+        }
+
+        /// <summary>
         /// If this object spawns anything on click/tap
         /// This function will spawn it
         /// </summary>
-        protected void Click()
+        protected virtual void Click()
         {
             if (spawnsObjects) //if this object can spawn objects
             {
@@ -100,11 +174,12 @@ namespace Merge
                             spawnableObjects[
                                     Random.Range(0, spawnableObjects.Length - 1)]
                                 .ChainBaseObject); //spawn random spawnable prefab
-
+                    
                     if (newObject != null) //if spawn object succeeded
                     {
                         spawnCount--; //decrease spawnable objects
                     }
+                    
 
                     if (spawnCount <= 0) KillObject(); //kill object if empty
                 }
@@ -136,7 +211,7 @@ namespace Merge
             }
 
             location = GridManager.FreeBox();
-            level = Mathf.Max(0, mergeLevel - 3);
+            level = Mathf.Max(0, mergeLevel-chain.SpawningLevel);
 
 
             if (location != null) //if we have a valid location to spawn to
@@ -146,35 +221,6 @@ namespace Merge
 
             return null;
         }
-
-        protected void OnMouseDown()
-        {
-            GridManager.EnableObjectColliders(
-                false); //disable other object colliders so only the colliders for the boxes are accessible
-            Collider.enabled = true; //enable own collider so OnMouseUpAsButton() gets called correctly
-        }
-
-        /// <summary>
-        /// Make selected object follow mouse.
-        /// Objects that have reached the highest merge level cannot currently be moved.
-        /// </summary>
-        protected void OnMouseDrag()
-        {
-            if (mergeable)
-            {
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                transform.position = new Vector3(mousePosition.x, mousePosition.y, -1);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected void OnMouseUpAsButton()
-        {
-            StartCoroutine(ReleaseObject());
-        }
-
 
         protected IEnumerator ReleaseObject()
         {
@@ -199,7 +245,7 @@ namespace Merge
             }
             else if (currentlyOver.CurrentObject.Chain == chain &&
                      currentlyOver.CurrentObject.MergeLevel == mergeLevel &&
-                     mergeable) //if over a box containing an identical object and mergeable
+                     Mergeable) //if over a box containing an identical object and mergeable
             {
                 SpawnObject(this, true);
 
@@ -217,22 +263,22 @@ namespace Merge
         }
 
         /// <summary>
-        /// Get the appropriate sprite and display it.
+        /// Gets own box component and assigns itself, otherwise log error
         /// </summary>
-        public void CheckVisual()
+        private void SetBox()
         {
-            if (render == null) render = GetComponent<SpriteRenderer>(); //get renderer
-            sprite = Chain.GetSprite(MergeLevel); //get sprite
-            render.sprite = sprite; //put sprite in renderer
+            currentBox = GetComponentInParent<Box>(); //get box parent
+            if (currentBox)
+            {
+                currentBox.SetObject(this); //tell box parent about this child
+            }
+            else
+            {
+                Debug.LogError($"{name} is not placed correctly in the hierarchy and is not the child of a box.",
+                    gameObject);
+            }
         }
 
-        /// <summary>
-        /// Remove this object from list of active objects and destroy the gameobject.
-        /// </summary>
-        public void KillObject()
-        {
-            GridManager.objectsInPlay.Remove(this);
-            Destroy(gameObject);
-        }
+        #endregion
     }
 }

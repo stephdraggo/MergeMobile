@@ -1,45 +1,78 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Merge
 {
+    /// <summary>
+    /// Tells objects to start spawning
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private int countForEach = 4;
-        [SerializeField] private float timer = 10;
+        #region Variables
+
+        //------------Static------------
+        public static GameManager Instance;
+
+        public static int Points = 0;
+
+        //----------Properties----------
+        //------------Public------------
+        //----------Serialised----------
         [SerializeField] private List<ChainBase> chains;
+
+        [SerializeField] private TMP_Text coinDisplay, goalDisplay;
+
+        [SerializeField] private int goal;
+
+        [SerializeField] private UnityEvent winEvent;
+        //-----------Private------------
+        //------------Const-------------
+
+        #endregion
+
+        //Start
+
+        #region Default Methods
 
         void Start()
         {
+            Instance = this;
+
             //spawn some objects on start with Ienumerator
             foreach (ChainBase _chain in chains)
             {
-                StartCoroutine(ObjectsOnStart(_chain, countForEach));
+                StartCoroutine(_chain.ObjectsOnStart());
+                StartCoroutine(_chain.ObjectsThroughGame());
             }
 
-            //spawn objects through game with Ienumerator
-            StartCoroutine(ObjectsThroughGame());
+            coinDisplay.text = Points.ToString();
+            goalDisplay.text = "Goal: " + goal.ToString() + " gold";
         }
 
-        private IEnumerator ObjectsOnStart(ChainBase _chain, int _count)
+        #endregion
+
+        #region Other Methods
+
+        public void PointChange(int _change)
         {
-            while (_count > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                _chain.NewObject(GridManager.FreeBox(), _chain.ChainBaseObject);
-                _count--;
-            }
+            Points += _change;
+            coinDisplay.text = Points.ToString();
+            if(Points>=goal) WinLevel();
         }
 
-        private IEnumerator ObjectsThroughGame()
+        private void WinLevel()
         {
-            while (gameObject.activeSelf)
-            {
-                yield return new WaitForSeconds(timer);
-                ChainBase _chain = chains[Random.Range(0, chains.Count)];
-                _chain.NewObject(GridManager.FreeBox(), _chain.ChainBaseObject);
-            }
+            winEvent.Invoke();
+            goal *= 3;
+            goalDisplay.text = "Goal: " + goal.ToString() + " gold";
+            
+            PointChange(-goal/3);
         }
+        
+        #endregion
     }
 }

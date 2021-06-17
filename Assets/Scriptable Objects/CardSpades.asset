@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: CardSpades
+  m_EditorClassIdentifier: 
+  objectName: SpadeSuit
+  chainBase: {fileID: 655426081129846296, guid: f2ba531f4fa671f41a2b7382f8a13622, type: 3}
+  spawningLevel: 6
+  sprites:
+  - {fileID: 7756337367221525462, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -6395380774965249266, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -3481924905181399775, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -854906680903703988, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -5140895637380575340, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: 4629798558575110845, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -740719862227693382, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: 6288683454033253665, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -9149078590162400388, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: 2395843156557124080, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: 9134881966188241049, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -1254326624263157989, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  - {fileID: -8611147870274541529, guid: 6c93f7d21a6d6dd4c8982329aa6acc25, type: 3}
+  spawnables:
+  - {fileID: 11400000, guid: 36878ad11f0b53f4fa897c7a26dbce49, type: 2}
+  countOnStart: 2
+  spawnTimer: 43

@@ -11,13 +11,20 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Coin.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/BuyObject.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
-      <option value="$PROJECT_DIR$/Assets/Scripts/ChainBase.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GridManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Box.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Testing.cs" />
       <option value="$PROJECT_DIR$/Assets/Scripts/ObjectBase.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/Coin.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/ChainBase.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
+      <option value="$PROJECT_DIR$/Assets/Scripts/BuyObject.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tyJgK2I8qYAtErUrQPLL9DDxYS" />
@@ -39,20 +46,20 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor &amp; Play">
-    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="3652">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="15724">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="3652" />
+      <option name="pid" value="15724" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="2072">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="2072" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -69,6 +76,8 @@
       <option name="presentableId" value="Default" />
       <updated>1623735510461</updated>
       <workItem from="1623735539574" duration="5658000" />
+      <workItem from="1623801446616" duration="11151000" />
+      <workItem from="1623883517986" duration="4715000" />
     </task>
     <servers />
   </component>

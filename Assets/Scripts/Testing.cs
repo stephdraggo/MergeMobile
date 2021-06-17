@@ -1,18 +1,15 @@
-
+using System;
 using UnityEngine;
+using Merge;
 
-namespace Merge
+
+public class Testing : MonoBehaviour
 {
-    public class Testing : MonoBehaviour
+    public ChainBase chain;
+    public int level;
+
+    public void SpawnObject()
     {
-        public ChainBase chain;
-
-        public void SpawnObject()
-        {
-            chain.NewObject(GridManager.FreeBox(),chain.ChainBaseObject, 3);
-        }
-
+        chain.NewObject(GridManager.FreeBox(), chain.ChainBaseObject, level);
     }
-
-
 }

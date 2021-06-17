@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa278f6ff473c71409d80ee9730d49de, type: 3}
+  m_Name: CardClubs
+  m_EditorClassIdentifier: 
+  objectName: ClubSuit
+  chainBase: {fileID: 655426081129846296, guid: 2db6e5327d90e1747a2c4e269c6c7243, type: 3}
+  spawningLevel: 6
+  sprites:
+  - {fileID: -4613817358885091727, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -8217311900854576502, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 8718215357043622208, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 8451858899465739266, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 98023826383802746, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 1086229565618905310, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 9038326248256825703, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -6096683024824012752, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: 1078820765180662331, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -6059778334413476102, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -5508727000589847285, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -3456971014822014359, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  - {fileID: -8481471966263882715, guid: 663251c8a3cefae458c1c74c2305830b, type: 3}
+  spawnables:
+  - {fileID: 11400000, guid: 36878ad11f0b53f4fa897c7a26dbce49, type: 2}
+  countOnStart: 2
+  spawnTimer: 40
