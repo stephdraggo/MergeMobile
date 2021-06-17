@@ -3129,9 +3129,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'more
-
-    (testing)'
+  m_Text: cheat
 --- !u!222 &1052905147
 CanvasRenderer:
   m_ObjectHideFlags: 0
